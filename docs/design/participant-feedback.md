@@ -44,4 +44,4 @@ The following conclusions are separate from the participant responses above.
 
 ## Evaluation scope
 
-These conversations provide qualitative reactions to the shared mockups and proposed booking rules. No task-completion times or error counts were supplied. The revised design should be reviewed again before drawing conclusions about its effectiveness. William's own evaluation and final sign-off remain to be added.
+These conversations provide qualitative reactions to the shared mockups and proposed booking rules. No task-completion times or error counts were supplied. The revised design should be reviewed again before drawing conclusions about its effectiveness. William's own evaluation is included in personal-evaluation.md and the submission PDF; final sign-off remains with William.
