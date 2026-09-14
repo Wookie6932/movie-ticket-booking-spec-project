@@ -1,6 +1,6 @@
 # Research and evaluation working notes
 
-September 14, 2026. Evidence status: desk research complete for the scope below; primary participant research pending. Sources were reviewed as public documentation/search-indexed official text. No competitor purchase was made and no timed competitor usability test was performed. Some live pages blocked automated access; these findings concern documented flows, not independently verified screen-by-screen checkout behavior.
+September 14, 2026. Evidence status: desk research complete for the scope below; participant summary received from William. Sources were reviewed as public documentation/search-indexed official text. No competitor purchase was made and no timed competitor usability test was performed. Some live pages blocked automated access; these findings concern documented flows, not independently verified screen-by-screen checkout behavior.
 
 ## Competitive analysis
 
@@ -15,15 +15,13 @@ Atom's help documentation describes selecting a movie/showtime, selecting seats 
 
 **Cross-competitor interpretation:** browsing, seat selection, confirmation retrieval and after-purchase management are recurring documented functions. This supports the existing use-case scope, but does not prove demand or ease of use. The team's business case and actual participant responses are still needed. Price transparency and explicit cancellation are design hypotheses to test, not quoted user complaints.
 
-## User interviews / survey
+## User interviews and prototype evaluation
 
-Recruit at least two people who have booked cinema tickets; the assignment specifies three or more questions but does not specify an interview sample size. Use P1 and P2 aliases. Ask before showing the design:
-1. Think about the last time you bought movie tickets. How did you choose the theater, time and seats, and complete the booking?
-2. Which part was confusing, slow or frustrating? Describe a specific example, if any.
-3. What would you most like a booking service to make easier or clearer, and why?
-4. How do you find a ticket later or change plans? What information do you need before cancelling?
+William supplied interview responses from two participants after sharing the mockups. See [participant-feedback.md](participant-feedback.md) for the responses in their supplied wording, followed by findings and design decisions. No task-performance measurements were supplied.
 
-No responses have been collected. Do not convert these questions or desk-review hypotheses into participant findings.
+P1 reported reliance on help/box-office purchasing, unexpected fees, uncertain seat-map orientation and pressure from the five-minute hold. P2 reported a preference for short text, strong visual cues and recovery that preserves the screening context. Both supported deliberate cancellation confirmation; their views on six-ticket limits differed.
+
+These findings revise R6, R8, R14 and R19. The interviews asked about current purchasing, pain points, the hold duration, group size, cancellation and desired improvements.
 
 ## Technical feasibility
 
@@ -35,35 +33,8 @@ No responses have been collected. Do not convert these questions or desk-review 
 
 **Hosting:** GitHub Pages can publish the specification and static prototype materials. It is not the server/database needed for authentication, authoritative inventory or production reservations. This assignment uses a paper prototype, so that limitation does not prevent interaction evaluation. [GitHub Pages overview](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages).
 
-## Participant evaluation protocol
+## Evaluation and next steps
 
-Use the prototype PDF on screen or print it. These are paper screens: participants point to controls and explain their next action; the facilitator changes pages and records choices. All movies, prices, account details and references are fictional. Do not request passwords, payment details or identifying personal data.
+Initial desk inspection identified selection-versus-hold ambiguity, missing edit-hold warnings and cancellation-preview ambiguity. The new participant review supports additional timing and visual improvements. The revised prototype shows early price itemization, an extension option and differentiated cancellation controls. Participants have not retested it.
 
-Task A: You and a friend want to see The Last Orbit at 7:15 PM on September 18. Find two adjacent available seats, tell me the total and confirm the simulated booking. Where would you find the reference later?
-
-Task B: Your plans changed before showtime. Find the reservation and cancel it. Tell me what happens to the seats. First show the cancellation preview and ask whether the booking is already cancelled.
-
-Task C: Your selected seats became unavailable before Continue, or your hold expired. Explain what you would do next using the recovery panel.
-
-Do not teach the controls before the first attempt. Capture elapsed time only as a paper-task observation, not as application performance. Record at least two external observations, one from each person. William should add his own evaluation separately from the desk review supplied with this package.
-
-| Participant | Task | What they did / exact words | Difficulty / outcome | Suggested change | Date |
-|---|---|---|---|---|---|
-| P1 | Pending | No observation collected | Pending | Pending | Pending |
-| P2 | Pending | No observation collected | Pending | Pending | Pending |
-| William | Pending | Owner evaluation not yet supplied | Pending | Pending | Pending |
-
-## Completion gate
-
-Before submission: add real interview responses and two external prototype observations; summarize themes without inflating the sample; revise all specification sections; verify the exact Pages URL; export the updated PDF. The current report is a draft, not a completed research claim.
-
-
-## Prototype inspection and provisional revisions
-
-Five rendered paper screens were inspected on September 14, 2026. This was a desk walkthrough, not a participant session and not William's personal evaluation. The seat map differentiates OPEN/PICK/X states; the review shows a $24 sample total; cancellation has a keep-versus-confirm decision.
-
-Three observations: selection must be distinguished from a held seat (R6); editing seats must explain the release of a hold (R9); the cancellation panel must say preview/not yet cancelled (R14). These requirements and matching acceptance criteria were revised. Further review also blocks movie/runtime changes on booked screenings (R17). Every section's disposition is recorded in specification.md.
-
-Paper-test limitations: highlighted sample seats and facilitator instructions can lead participants. Cover helper notes, ask participants to choose seats before revealing the worked B3/B4 example, and record when a facilitator supplied information. Runtime behavior, authentication, concurrency and keyboard/screen-reader behavior are not implemented or validated by these sheets.
-
-Recruitment update: William selected two readily available family participants with different reported comfort levels using technology. They will be reported as P1/P2. No responses have yet been received. This convenience sample offers formative feedback and does not represent all cinema customers.
+All specification sections were reviewed; see the v0.3 revision table. Before final submission, William should review the report, add his own evaluation, reconcile the full business case and check the exact Markdown URL in a regular browser. The HTML companion is browser-readable. No production performance, transactional integrity or accessibility conformance test has been completed.

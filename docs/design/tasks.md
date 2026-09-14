@@ -5,9 +5,9 @@
 - [x] Prepare research and participant questions.
 - [x] Generate and inspect paper prototype images.
 - [x] Record desk-review findings and revise specification.
-- [ ] Collect interview responses from prospective users.
-- [ ] Collect at least two external prototype observations.
+- [x] Incorporate interview responses supplied by William, retaining their wording.
+- [x] Incorporate qualitative prototype review reactions from P1 and P2; no measured task observations claimed.
 - [ ] Reconcile complete business case.
-- [ ] Revise every specification section against participant findings.
+- [x] Review every specification section against participant findings.
 - [ ] Verify GitHub Pages specification URL.
 - [ ] Export final submission PDF with no pending required evidence.

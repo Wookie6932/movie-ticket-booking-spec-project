@@ -1,8 +1,8 @@
 # Movie Ticket Booking System - Specification
 
-Owner: William | Individual assignment | Version: 0.3, revised after participant review | Date: September 14, 2026
+Owner: William | Individual assignment | Version: 0.2, revised after desk research and prototype inspection | Date: September 14, 2026
 
-Status: Revised for owner review, not signed off. William supplied interview responses from P1 and P2 after sharing the mockups. The supplied response wording is preserved in participant-feedback.md; the feedback is qualitative, with no measured task results. The full business case remains unavailable. Numeric limits and policies are individual-project decisions, not established team requirements.
+Status: Working draft, not signed off. Participant feedback and the full business case have not been supplied. Numeric limits, timing and policies below are proposed individual-project decisions, not established team requirements.
 
 Source basis: the copied `docs/assignment-2.md` summary and `docs/use-case-diagram.puml`, which identify accounts, browsing, booking, reservation management and theater administration. They do not contain the complete business case or detailed functional requirements. Original project attribution remains in `docs/design/README.md`.
 
@@ -18,9 +18,9 @@ Source basis: the copied `docs/assignment-2.md` summary and `docs/use-case-diagr
 
 ## 1. Problem & Intent
 
-**Who is this for?** Moviegoers booking one to six seats at one configured theater, and the theater administrator maintaining its schedule. P1 and P2 are a convenience sample with different technology and reading preferences, not a validated market segment.
+**Who is this for?** Moviegoers booking one to six seats at one configured theater, and the theater administrator maintaining its schedule. A student audience is a recruitment convenience for this assignment, not a validated market segment.
 
-**What problem do they have today?** The supplied participant summary identifies unexpected checkout fees, uncertainty about seat-map orientation, pressure from short holds, dense text and ambiguous cancellation controls. P1 sometimes relies on another person or the box office; P2 prefers quick mobile flows and strong visual cues. These two reports inform the design but do not establish prevalence across all moviegoers.
+**What problem do they have today?** Working hypothesis: comparing showtimes, finding seats together and understanding the final price and cancellation options can require too much effort. Interviews must verify how prospective users actually book and which problems they experience.
 
 **Why now / why us?** The existing team concept provides five coherent use cases for a manageable individual design exercise. This specification develops that concept independently; it does not claim a proven competitive advantage.
 
@@ -80,20 +80,20 @@ The paper prototype evaluates the customer booking/cancellation flow and a sampl
 | R3 | When a visitor registers with a valid unused email and a password of at least 15 characters, the system shall create a customer account; when credentials are valid, the system shall sign the customer in. | Event |
 | R4 | When a signed-in customer changes their display name or signs out, the system shall save the name or end the authenticated session respectively. | Event |
 | R5 | When a customer chooses a showtime, the system shall show its seat map, screen orientation, seat IDs and available, selected and unavailable states. | Event |
-| R6 | When a customer selects or deselects available seats, the system shall update the seat list, ticket count and itemized total including fees and taxes before a hold begins, and explain that selection alone does not hold seats; if the count is outside 1 to 6, then the system shall prevent continuation. | Event / Unwanted |
+| R6 | When a customer selects or deselects available seats, the system shall update the seat list, ticket count and total and explain that selection alone does not hold seats; if the count is outside 1 to 6, then the system shall prevent continuation. | Event / Unwanted |
 | R7 | When a signed-in customer continues from seat selection, the system shall atomically hold all chosen seats for five minutes; if any seat is no longer available, then it shall hold none and explain which seats must be reselected. | Event / Unwanted |
-| R8 | While a hold is active, the system shall display its remaining time without flashing or sound; at one minute remaining it shall offer one optional two-minute extension. When the customer requests extension before expiry, the server shall extend the owned hold exactly once. If the hold expires, then it shall release the seats, prevent confirmation and return the customer to seat selection while preserving the movie and showtime and identifying any seats now unavailable. | State / Unwanted |
+| R8 | While a hold is active, the system shall display its remaining time; if it expires, then it shall release the seats, prevent confirmation and return the customer to seat selection with an explanation. | State / Unwanted |
 | R9 | When a customer reviews a reservation, the system shall show movie, theater, date, local time, format, seats, itemized ticket subtotal, fees, taxes, total and cancellation cutoff before confirmation; choosing Edit seats shall warn that the existing hold will be released before the customer continues. | Event |
 | R10 | When a customer confirms a valid unexpired held reservation, the system shall create one confirmed reservation and one unique reference and change its seats to booked; repeated confirmation of the same request shall return the same reservation. | Event |
 | R11 | If confirmation fails or its result is unknown, then the system shall show the known status and offer a safe status check; it shall not tell the customer to create a second booking while the first result is unknown. | Unwanted |
 | R12 | When a reservation is confirmed, the system shall show its reference, booking details, status and a link to My reservations. | Event |
 | R13 | When an authenticated customer opens My reservations, the system shall show only that customer's reservations with their current confirmed or cancelled status. | Event |
-| R14 | When a customer requests cancellation before the showtime, the system shall display the affected reservation and label the preview as not yet cancelled with Keep reservation and Confirm cancellation actions that differ in text, symbol and placement, not color alone; after confirmation it shall mark the entire reservation cancelled and release its seats exactly once. | Event |
+| R14 | When a customer requests cancellation before the showtime, the system shall display the affected reservation and label the preview as not yet cancelled with Keep reservation and Confirm cancellation actions; after confirmation it shall mark the entire reservation cancelled and release its seats exactly once. | Event |
 | R15 | If a showtime has started, then the system shall reject cancellation and show the cutoff reason in the theater's local time. | Unwanted |
 | R16 | When an authorized theater administrator saves a valid movie or future showtime, the system shall persist it and show published entries to customers. | Event |
 | R17 | If a showtime overlaps another in the same auditorium, has invalid fields, or an edit would change the time, movie, runtime or auditorium of a showtime with active reservations, then the system shall reject the save and explain the conflict. | Unwanted |
 | R18 | The system shall restrict movie and showtime changes to theater administrators using server-side authorization. | Ubiquitous |
-| R19 | The system shall support keyboard use, visible focus, labeled fields and errors, readable/selectable text compatible with read-aloud tools, and seat states distinguished by text and shape or symbol as well as color. It shall use short instructions and explain booking terms such as seat hold and service fee at the point of use. | Ubiquitous |
+| R19 | The system shall support keyboard use of the booking flow, visible focus, labeled fields and errors, and seat states conveyed without relying on color alone. | Ubiquitous |
 | R20 | The assignment prototype shall display a simulation notice and shall neither collect payment card details nor charge money. | Ubiquitous |
 
 ## 5. Acceptance Criteria
@@ -107,20 +107,20 @@ These are planned pass/fail checks, not claims of completed implementation testi
 | R3 | Register, sign out and sign in; repeat with duplicate email, malformed email and short password. | Valid case succeeds; each invalid case explains the affected field without creating another account. |
 | R4 | Change a name, reload, then sign out and request reservations. | Name persists; reservation access requires sign-in after sign-out. |
 | R5 | Open a showtime with unavailable seats. | Seat IDs and all states are distinguishable by text or symbols as well as color; unavailable seats cannot be selected. |
-| R6 | Select two seats, deselect one, attempt zero and seven. | Counts and itemized totals agree before Continue, including a nonzero fee/tax fixture; only 1 to 6 seats can proceed; the selection-versus-hold explanation is visible. |
+| R6 | Select two seats, deselect one, attempt zero and seven. | Counts and totals agree; only 1 to 6 seats can proceed; the selection-versus-hold explanation is visible. |
 | R7 | Two sessions request the same seats concurrently. | Only one session obtains the conflicting hold; the other gets an actionable conflict message and no partial hold. |
-| R8 | Request extension at one minute, request it again, then expire the hold; separately attempt extension after expiry. | First valid request adds exactly 120 seconds; repeats do not extend again; late requests fail. Expiry releases seats and blocks confirmation while preserving movie/showtime and explaining unavailable seats. |
+| R8 | Expire the hold before confirmation. | Seats become available again; confirmation fails; movie and showtime remain selected. |
 | R9 | Review a two-ticket fixture at $12 each, $0 fee and $0 tax. | All details appear; the total is $24.00; editing seats first warns about releasing the hold, then updates the total before confirmation. |
 | R10 | Confirm twice using the same request identifier. | Exactly one reservation/reference exists and its seat count equals the requested count. |
 | R11 | Simulate server failure and a lost confirmation response. | Known failure is distinguished from pending/unknown; checking the request returns its existing result without duplication. |
 | R12 | Complete one valid reservation. | Confirmation and the customer reservation list show the same reference, showtime and seats. |
 | R13 | Use two accounts and attempt to open the other account's reservation directly. | Each sees only their own data; unauthorized direct access is rejected. |
-| R14 | Preview cancellation, keep reservation, then confirm cancellation twice. | Preview clearly says not yet cancelled and changes nothing; controls differ by text, symbol and placement in grayscale; Keep reservation exits safely; first confirmation cancels; repeated confirmation creates no additional effect. |
+| R14 | Preview cancellation, keep reservation, then confirm cancellation twice. | Preview clearly says not yet cancelled and changes nothing; Keep reservation exits safely; first confirmation cancels; repeated confirmation creates no additional effect. |
 | R15 | Attempt cancellation one second before, at and after the start time. | Before start is permitted; at/after start is refused; the reason is visible. |
 | R16 | Save a movie with title, rating and positive runtime, then a future showtime with auditorium, format and nonnegative price. | Saved details persist and published showtime appears on the correct customer date. |
 | R17 | Try overlapping screenings, past time, negative price and moving a booked screening. | All invalid edits fail with useful messages; valid non-overlapping entries remain unchanged. |
 | R18 | Send an administrator save request as a visitor and as a customer. | Both are denied and no stored data changes. |
-| R19 | Complete browse, select, review and cancellation with keyboard only; inspect accessible names and contrast. | No keyboard trap; actions have visible focus and accessible names; normal text meets 4.5:1 contrast; read-aloud output includes essential instructions and seat status; unfamiliar terms have short explanations; states remain distinguishable in grayscale. |
+| R19 | Complete browse, select, review and cancellation with keyboard only; inspect accessible names and contrast. | No keyboard trap; every action has visible focus and an understandable name; normal text meets 4.5:1 contrast. |
 | R20 | Inspect every prototype screen and complete the simulated flow. | Simulation is identified; no real payment field, payment request or charge is present. |
 
 ## 6. Constraints & Non-Functional Requirements
@@ -130,7 +130,7 @@ These are planned pass/fail checks, not claims of completed implementation testi
 - **Accessibility:** target WCAG 2.2 AA. Keyboard access, text seat labels, visible focus, contrast and readable field errors are required. A future implementation needs a full accessibility review; a paper prototype cannot demonstrate conformance.
 - **Compliance/Legal:** use fictional movie fixtures or licensed content. Live commercial ticketing, payment handling, refund obligations and deployment privacy notices are outside this classroom prototype and need separate review before launch.
 - **Budget/Timeline:** no paid services authorized. Proposed sequence: draft, desk research, paper prototype, two external evaluations, then final revision and PDF. Assignment deadline is unknown.
-- **Business rules:** one theater; theater timezone America/Indiana/Indianapolis; store unambiguous timestamps and show local date/time. Five-minute server-timed holds with one optional two-minute extension requested before expiry; one to six tickets; whole-reservation cancellation only before showtime. Overlap includes runtime plus a proposed 15-minute turnaround. Sample price is $12, with $0 sample fees/tax, solely for testing and not an actual tax determination.
+- **Business rules:** one theater; theater timezone America/Indiana/Indianapolis; store unambiguous timestamps and show local date/time. Five-minute server-timed holds; one to six tickets; whole-reservation cancellation only before showtime. Overlap includes runtime plus a proposed 15-minute turnaround. Sample price is $12, with $0 sample fees/tax, solely for testing and not an actual tax determination.
 - **State definitions:** a seat is available, held until a timestamp, or booked for a showtime. A reservation is confirmed or cancelled. Pending/unknown describes an in-flight request, never a second reservation. Holds are rechecked server-side when confirming. All selected seats succeed or fail together. Editing seats relinquishes the previous hold and obtains a new hold only on Continue; explain that availability may change.
 
 ## 7. Open Questions
@@ -138,14 +138,12 @@ These are planned pass/fail checks, not claims of completed implementation testi
 | Question | Owner | Status |
 |---|---|---|
 | Does the full business case support the audience and one-theater scope? Supply and reconcile it. | William | Open; current repository has only a summary. |
-| Do customers report the hypothesized pains? | William / participants | Partly resolved: two summarized interviews report pricing, timing and reading/visual clarity issues; prevalence remains unknown. |
-| Are the revised hold extension, six-ticket limit, cancellation cutoff and turnaround acceptable? | William / theater stakeholder | Open; proposed prototype rules only. |
+| Do customers actually experience the hypothesized pains? | William / participants | Open; interviews pending. |
+| Are five-minute holds, six-ticket limit, cancellation cutoff and turnaround acceptable? | William / theater stakeholder | Open; proposed prototype rules only. |
 | Are email verification, password recovery, accessible-seat eligibility and guest checkout needed? | William | Open; not silently assumed implemented. |
 | What happens when the theater cancels a booked screening? | Theater stakeholder | Open; blocked administrator edits avoid inventing policy. |
 | What are the final deadline, hosting budget and data retention policy? | William | Open. |
-| What changes follow participant prototype review? | William / P1 / P2 | Resolved for this revision: upfront itemization, optional hold extension and distinct cancellation/seat cues. No task-completion metrics collected. |
-| Does the time limit meet accessibility timing requirements, or qualify for an essential real-time exception? | William / implementer | Open; one extension alone does not establish WCAG timing conformance. |
-| Should a later version support more than six seats? | William | Open: P1 reported a group-booking gap; P2 accepted six. Keep six for this version and explain the limit before selection. |
+| What changes follow the two external usability observations? | William / P1 / P2 | Open; no observations recorded yet. |
 
 ## 8. Plan
 
@@ -155,30 +153,30 @@ See `plan.md` and `tasks.md`. Review the requirements and plan before expanding 
 
 | Role | Name | Date | Signed off? |
 |---|---|---|---|
-| Spec owner | William | Pending | No; owner review pending. |
+| Spec owner | William | Pending | No; needs review and participant findings. |
 | Reviewer | To be named | Pending | No. |
 
 
 ## Revision evidence and full-section review
 
-Baselines: `specification-draft-v0.1.md` and `specification-draft-v0.2.md`. Evidence: `participant-feedback.md` preserves the interview responses supplied by William and separates those responses from the design decisions. The latest paper prototype implements the feedback-driven wording and visual changes; participants have not retested this revision.
+Initial baseline: `specification-draft-v0.1.md`, saved before prototype generation. Supporting notes: `research-and-evaluation.md`. This revision is provisional: no interview responses, owner evaluation or external usability observations have been recorded.
 
-| Section | Review decision |
+| Section reviewed | Result of desk research / prototype inspection |
 |---|---|
-| 0 Constitution | Retain price transparency, reservation integrity, privacy and accessibility principles; supported by the reported feedback. |
-| 1 Problem & Intent | Replace unvalidated pain-point wording with the two participants' reported issues; retain unmeasured success targets. |
-| 2 Scope | Retain six-seat limit; explicitly record P1's unmet group need. Live payments remain excluded. |
-| 3 Scenarios | Retain all five flows; feedback supports booking recovery and deliberate cancellation. |
-| 4 Requirements | Strengthen R6 itemization before holding; revise R8 to offer one extension and preserve context; strengthen R14 visual differentiation and R19 readable text/symbols. |
-| 5 Acceptance Criteria | Update R6, R8, R14 and R19 checks. They remain tests for a future implementation, not completed results. |
-| 6 Constraints | Add the optional extension; retain server authority and accessibility target. Do not claim timing conformance from one extension. |
-| 7 Open Questions | Resolve qualitative participant feedback; retain business-case, operational-policy, accessibility timing and group-booking questions. |
-| 8 Plan | Participant review completed from supplied notes; next steps are owner review, optional retest and final URL verification. |
-| 9 Approval | Owner/reviewer sign-off remains pending. |
+| 0 Constitution | Retained; competitor pricing/cancellation documents support explicit pre-confirmation information. |
+| 1 Problem & Intent | Retained as hypotheses and unmeasured targets; awaiting actual business case and interviews. |
+| 2 Scope | Retained; payment provider research confirms a separate future integration, outside the paper prototype. |
+| 3 Scenarios | Retained; paper screens cover browsing, the account handoff, booking, cancellation and an administrator save. Account details remain schematic. |
+| 4 Requirements | R6 now explains selection versus holding; R9 warns before releasing a hold to edit; R14 explicitly separates cancellation preview from completion; R17 also protects booked movie/runtime changes. |
+| 5 Acceptance Criteria | R6, R9 and R14 tests now check the added visible guidance; R17 invalid-edit checks include movie/runtime changes by the same rule. All remain planned tests. |
+| 6 Constraints | Retained; concurrency is a backend requirement, not evidence established by a paper prototype. |
+| 7 Open Questions | Retained; participant evidence, complete business case and unvalidated policies remain open. |
+| 8 Plan | Retained; primary research and final PDF remain gated on actual feedback. |
+| 9 Approval | Retained as pending; neither participant nor owner sign-off is fabricated. |
 
-Key prototype evaluation findings based on the supplied responses:
-1. P1 described the five-minute hold as stressful. Revision: a calm time display and optional two-minute extension; effectiveness remains untested.
-2. P2 requested recovery that preserves the selected movie/showtime and identifies lost seats. Revision: explicit recovery wording and context-preservation test.
-3. P1 wanted an unmistakable final cancellation action; P2 requested different symbols and visual treatment for keeping versus cancelling. Revision: separated controls with distinct labels and symbols, supported without color alone.
+Prototype inspection observations (desk review, not participant findings):
+1. The seat sheet highlights B3/B4, but only Continue creates a hold. The wording must distinguish selection from reservation. R6 now requires this explanation.
+2. The review sheet offers Edit seats without explaining what happens to the active hold. R9 now requires a release warning; the revised screen includes it.
+3. The confirmation sheet and cancellation preview share one paper sheet. An explicit preview/not-yet-cancelled label is needed to avoid conflating states. R14 now requires this distinction. A future interactive prototype should present these as separate states.
 
 Related sources: [AMC refund information](https://www.amctheatres.com/faqs/refunds), [Fandango ticket policy](https://www.fandango.com/policies/ticket-and-concessions-policy), [Atom support](https://www.atomtickets.com/help/support), [PostgreSQL row locking](https://www.postgresql.org/docs/current/explicit-locking.html), [WCAG reference](https://www.w3.org/WAI/WCAG22/quickref/).
