@@ -1,0 +1,54 @@
+@startuml
+left to right direction
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam ArrowColor #333333
+skinparam actorBorderColor #333333
+skinparam actorFontColor #222222
+skinparam linetype polyline
+
+skinparam usecase {
+  BackgroundColor #F7F7F7
+  BorderColor #333333
+  FontColor #222222
+}
+
+skinparam rectangle {
+  BackgroundColor white
+  BorderColor #333333
+  FontColor #222222
+}
+
+actor Customer
+actor "Theater Administrator" as Admin
+
+rectangle "Movie Ticket Booking System" {
+  usecase "UC-1: Create and Manage\na Customer Account" as UC1
+  usecase "UC-3: Browse Movies\nand Showtimes" as UC3
+  usecase "UC-2: Select Seats\nand Book Tickets" as UC2
+  usecase "UC-4: View and\nManage Reservations" as UC4
+  usecase "UC-5: Manage Movies\nand Showtimes" as UC5
+
+  usecase "Check Seat Availability" as CheckSeats
+  usecase "Record Reservation" as RecordReservation
+  usecase "Update Seat Availability" as UpdateSeats
+  usecase "Cancel Reservation" as CancelReservation
+}
+
+Customer -- UC1
+Customer -- UC3
+Customer -- UC2
+Customer -- UC4
+Admin -- UC5
+
+UC2 ..> CheckSeats : <<include>>
+UC2 ..> RecordReservation : <<include>>
+UC2 ..> UpdateSeats : <<include>>
+
+CancelReservation ..> UC4 : <<extend>>\n[customer chooses to cancel]
+CancelReservation ..> UpdateSeats : <<include>>
+
+@enduml
